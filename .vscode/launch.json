@@ -6,8 +6,8 @@
       "type": "lldb",
       "request": "launch",
       "args": [],
-      "cwd": "/Users/osamakechida/Documents/my_robottank/Min_Robot/main",
-      "program": "/Users/osamakechida/Documents/my_robottank/Min_Robot/main/build/Debug/outDebug"
+      "cwd": "/Users/osamakechida/Documents/my_robottank",
+      "program": "/Users/osamakechida/Documents/my_robottank/build/Debug/outDebug"
     }
   ]
 }

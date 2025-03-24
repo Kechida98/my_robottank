@@ -1,4 +1,18 @@
 {
+  "idf.flashType": "UART",
+  "idf.port": "/dev/tty.usbserial-1130",
+  "idf.espIdfPath": "/Users/osamakechida/esp/v5.3/esp-idf",
+  "idf.toolsPath": "/Users/osamakechida/.espressif",
+  "idf.pythonInstallPath": "/opt/homebrew/bin/python3",
+  "idf.customExtraVars": {
+    "OPENOCD_SCRIPTS": "/Users/osamakechida/.espressif/tools/openocd-esp32/v0.12.0-esp32-20240318/openocd-esp32/share/openocd/scripts",
+    "ESP_ROM_ELF_DIR": "/Users/osamakechida/.espressif/tools/esp-rom-elfs/20240305/",
+    "IDF_TARGET": "esp32"
+  },
+  "idf.openOcdConfigs": [
+    "interface/ftdi/esp32_devkitj_v1.cfg",
+    "target/esp32.cfg"
+  ],
   "C_Cpp_Runner.cCompilerPath": "clang",
   "C_Cpp_Runner.cppCompilerPath": "clang++",
   "C_Cpp_Runner.debuggerPath": "lldb",
