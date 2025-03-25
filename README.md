@@ -11,7 +11,7 @@ DC Motor with plastic wheel
 Jumper cables
 Motor A was tested for forward and backward movement using PWM.
 Picture/Video below:
-https://github.com/user-attachments/assets/0f29f549-6c30-4501-aa57-32d214b5d122
+![Motor setup](https://github.com/user-attachments/assets/0f29f549-6c30-4501-aa57-32d214b5d122)
 
 
 
