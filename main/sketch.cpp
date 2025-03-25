@@ -28,3 +28,47 @@ void setup() {
   // testing
   Serial.print("Testing DC Motor...");
 }
+
+void loop() {
+ // Move the DC motor forward at maximum speed
+  Serial.println("Motor A: Moving Forward");
+  digitalWrite(motor1Pin1, LOW);
+  digitalWrite(motor1Pin2, HIGH);
+  ledcWrite(pwmChannel1, dutyCycle);
+  delay(2000);
+
+  // Stop Motor 
+  Serial.println("Motor A: Stopped");
+  digitalWrite(motor1Pin1, LOW);
+  digitalWrite(motor1Pin2, LOW);
+  ledcWrite(pwmChannel1, 0);
+  delay(1000);
+
+  // Move Motor backward at maximum speed
+  Serial.println("Motor A: Moving Backward");
+  digitalWrite(motor1Pin1, HIGH);
+  digitalWrite(motor1Pin2, LOW);
+  ledcWrite(pwmChannel1, dutyCycle);
+  delay(2000);
+
+  // Stop Motor 
+  Serial.println("Motor A: Stopped");
+  digitalWrite(motor1Pin1, LOW);
+  digitalWrite(motor1Pin2, LOW);
+  ledcWrite(pwmChannel1, 0);
+  delay(1000);
+
+  // Move Motor forward with increasing speed
+  digitalWrite(motor1Pin1, LOW);
+  digitalWrite(motor1Pin2, HIGH);
+  while (dutyCycle <= 255) {
+    ledcWrite(pwmChannel1, dutyCycle);
+    Serial.print("Motor A: Forward with duty cycle: ");
+    Serial.println(dutyCycle);
+    dutyCycle += 5;
+    delay(500);
+  }
+
+  // Reset duty cycle for next loop
+  dutyCycle = 200;
+}
