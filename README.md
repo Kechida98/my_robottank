@@ -20,8 +20,8 @@ In Prototype 2, I focused on running two DC motors simultaneously to test synchr
 I also bought the kit chassi to improve structure, stability, and overall design. Well it was either build my own chassi, wich i would do if i had a 3d printer or material to craft one. This helps with both functionality and future expansion (like mounting sensors, battery, and ESP board).
 Picture/Video below:
 
-![Image](https://github.com/user-attachments/assets/256ea9db-9586-4069-a3d3-8f7aa0ff2fba)
+![Image](https://github.com/user-attachments/assets/8655fdf0-c675-4677-bba9-76596d624ec1)
 
-![Image](https://github.com/user-attachments/assets/a66a8be0-fe1f-46dd-8cd2-25288e45c610)
+![Image](https://github.com/user-attachments/assets/f9de452d-4bb6-4732-a826-fda9fbc57b1c)
 
 
