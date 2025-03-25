@@ -1,5 +1,5 @@
 /*This code was first created in Arduino Ide.
-Prototype one was focus on getting motor A to move forward and backward,
+Prototype two was focus on getting motor A and B to move forward and backward,
 check Readme.md file for Pictures.
 */
 #include <Arduino.h>
