@@ -46,7 +46,6 @@ void loop() {
   digitalWrite(motor1Pin2, HIGH);
   digitalWrite(motor2Pin3, LOW);
   digitalWrite(motor2Pin4, HIGH);
-
   ledcWrite(pwmChannel1, dutyCycle);
   ledcWrite(pwmChannel2, dutyCycle);
   delay(2000);
@@ -57,7 +56,46 @@ void loop() {
   digitalWrite(motor1Pin2, LOW);
   digitalWrite(motor2Pin3, LOW);
   digitalWrite(motor2Pin4, LOW);
+  ledcWrite(pwmChannel1, 0);
+  ledcWrite(pwmChannel2, 0);
+  delay(1000);
 
+  //Turn Right (Motor A forward and B Stop)
+  Serial.println("Pivot Right");
+  digitalWrite(motor1Pin1, LOW);
+  digitalWrite(motor1Pin2, HIGH);
+  digitalWrite(motor2Pin3, LOW);
+  digitalWrite(motor2Pin4, LOW);
+  ledcWrite(pwmChannel1, dutyCycle);
+  ledcWrite(pwmChannel2, 0);
+  delay(1000);
+
+  //Stop
+  Serial.println("Stop")
+  digitalWrite(motor1Pin1, LOW);
+  digitalWrite(motor1Pin2, LOW);
+  digitalWrite(motor2Pin3, LOW);
+  digitalWrite(motor2Pin4, LOW);
+  ledcWrite(pwmChannel1, 0);
+  ledcWrite(pwmChannel2, 0);
+  delay(1000);
+
+  //Opposite
+  Serial.println("Pivot Left");
+  digitalWrite(motor1Pin1, LOW);
+  digitalWrite(motor1Pin2, LOW);
+  digitalWrite(motor2Pin3, LOW);
+  digitalWrite(motor2Pin4, HIGH);
+  ledcWrite(pwmChannel1, 0);
+  ledcWrite(pwmChannel2, dutyCycle);
+  delay(1000);
+
+  //Stop
+  Serial.println("Stop")
+  digitalWrite(motor1Pin1, LOW);
+  digitalWrite(motor1Pin2, LOW);
+  digitalWrite(motor2Pin3, LOW);
+  digitalWrite(motor2Pin4, LOW);
   ledcWrite(pwmChannel1, 0);
   ledcWrite(pwmChannel2, 0);
   delay(1000);
