@@ -2,7 +2,9 @@
 Prototype two was focus on getting motor A and B to move forward and backward,
 check Readme.md file for Pictures.
 */
+#include "sdkconfig.h"
 #include <Arduino.h>
+#include <Bluepad32.h>
 // Motor A
 int motor1Pin1 = 21; 
 int motor1Pin2 = 20; 
@@ -18,6 +20,8 @@ const int pwmChannel1 = 0;
 const int pwmChannel2 = 1;
 const int resolution = 8;
 int dutyCycle = 200;
+
+ControllerPtr myController [BP32_MAX_GAMEPADS];
 
 void setup() {
   // sets the pins as outputs:
