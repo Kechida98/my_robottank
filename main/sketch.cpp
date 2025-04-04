@@ -21,8 +21,6 @@ const int pwmChannel2 = 1;
 const int resolution = 8;
 int dutyCycle = 200;
 
-#include <Arduino.h>
-#include <Bluepad32.h>
 ControllerPtr myController [BP32_MAX_GAMEPADS];
 
 // This callback gets called any time a new gamepad is connected.
