@@ -21,7 +21,7 @@ const int pwmChannel2 = 1;
 const int resolution = 8;
 int dutyCycle = 200;
 
-ControllerPtr myController [BP32_MAX_GAMEPADS];
+ControllerPtr myControllers[BP32_MAX_GAMEPADS];
 
 // This callback gets called any time a new gamepad is connected.
 // Up to 4 gamepads can be connected at the same time.
@@ -42,6 +42,23 @@ void onConnectedController(ControllerPtr ctl) {
     }
     if (!foundEmptySlot) {
         Console.println("CALLBACK: Controller connected, but could not found empty slot");
+    }
+}
+
+void onDisconnectedController(ControllerPtr ctl) {
+    bool foundController = false;
+
+    for (int i = 0; i < BP32_MAX_GAMEPADS; i++) {
+        if (myControllers[i] == ctl){
+            Console.printf("CALLBACK: Controller disconnected from index=%d\n",i);
+            myControllers[i] = nullptr;
+            foundController = true
+            break;
+        }
+    }
+    
+    if (!foundController) {
+        Console.println("CALLBACK: Controller disconnected, but not found in myControllers");
     }
 }
 
