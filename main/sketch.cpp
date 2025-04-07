@@ -136,6 +136,23 @@ void processControllers(){
 }
 
 void setup() {
+
+    Console.printf("Firmware: %s\n", BP32.firmwareVersion());
+    const uint8_t* addr = BP32.localBdAddress();
+    Console.printf("BD Addr: %2X:%2X:%2X:%2X:%2X:%2X\n", addr[0], addr[1], addr[2], addr[3], addr[4], addr[5]);
+
+    //"Start scanning" will try to auto-connect to devices that are compatible with Bluepad32.
+    // E.g: if a Gamepad, keyboard or mouse are detected, it will try to auto connect to them.
+    // Initialize Bluepad32 with callbacks and start scanning
+    bool startScanning = true;
+    BP32.setup(&onConnectedController, &onDisconnectedController, startScanning);
+
+    // Optional: clear paired Bluetooth devices
+    BP32.forgetBluetoothKeys();
+     // Optional: enable BLE service (e.g. for apps like LightBlue) change to "true" if i want it activated
+    BP32.enableBLEService(false);
+
+
   // sets the pins as outputs:
   pinMode(motor1Pin1, OUTPUT);
   pinMode(motor1Pin2, OUTPUT);
@@ -153,6 +170,7 @@ void setup() {
 
   // testing
   Serial.print("Testing DC Motor...");
+  
 }
 
 void loop() {
