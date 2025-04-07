@@ -127,7 +127,7 @@ void processGamepad(ControllerPtr ctl) {
 
 void processControllers(){
     for (auto myController : myControllers) {
-        if (myController && myController->isConnected() && myController->hasData) {
+        if (myController && myController->isConnected() && myController->hasData()) {
             if (myController->isGamepad()){
                 processGamepad(myController);
             }
