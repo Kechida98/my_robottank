@@ -11,7 +11,7 @@ one DC Motor with one plastic wheel
 Jumper cables
 Motor A was tested for forward and backward movement using PWM.
 Picture/Video below:
-![Motor setup](https://github.com/user-attachments/assets/0f29f549-6c30-4501-aa57-32d214b5d122)
+![Motor setup](https://github.com/user-attachments/assets/0ee76e86-15a2-43bc-93b2-a7ba8820f6ca)
 
 
 ## Prototype 2
@@ -37,7 +37,6 @@ Picture/Video below:
 ![Image](https://github.com/user-attachments/assets/cef2f348-9651-4c71-ade7-fe4c406b4a01)
 
 
-
 ## Prototype 3
 
 In Prototype 3, I tested left and right movement, as well as forward and backward — all **without powering the microcontroller from my laptop**.  
@@ -48,3 +47,23 @@ For now, I’ll continue powering the microcontroller externally.
 
 Picture/Video below:
 ![Image](https://github.com/user-attachments/assets/44a64f3d-078d-4d90-97d8-be7de222b782)
+
+## Prototype 4 – PS4 Controller + ESP32 WROOM-32
+
+In this prototype, I connected a PS4 controller to an ESP32 WROOM-32 via Bluetooth. My previous ESP board wasn’t compatible with Bluedroid, so I switched to the WROOM-32.
+
+I’ve been using Ricardo Quesada’s **Bluepad32.h** library to read input from the controller, including joysticks, buttons, R2 (throttle), and L2 (brake).
+
+### Features:
+- Bluetooth connection with PS4 controller
+- Joystick and button input reading
+- Console debug using Bluepad32
+- Ready for motor control with PWM
+
+### Next steps:
+- Control 2 DC motors using joystick and triggers
+- R2 increases speed, R1 decreases speed
+- Add emergency stop function for safety
+
+Picture/Video below:
+![Image](https://github.com/user-attachments/assets/48a90633-8d2c-4bc6-a11b-93db7a30fcfe)
