@@ -85,7 +85,45 @@ void dumpGamepad(ControllerPtr ctl) {
     );
 }
 
+void processGamepad(ControllerPtr ctl) {
+     // Query whether a button is pressed
+    //  a(), b(), x(), y(), l1(), etc...
+    if (ctl->a()){
+        static int colorIdx = 0;
 
+        switch (colorIdx % 3){
+        case 0:
+            // Red
+            ctl->setColorLED(255, 0, 0);
+            break;
+        case 1:
+            // Green
+            ctl->setColorLED(0, 255, 0);
+            break;
+        case 2:
+            // Blue
+            ctl->setColorLED(0, 0, 255);
+            break;
+        }
+        colorIdx++;
+    }
+
+    if (ctl->b()){
+        // Turn on the 4 LED. Each bit represents one LED.
+        static int led = 0;
+        led++;
+        ctl->setPlayerLEDs(led & 0x0f);
+    }
+    if (ctl->x()) {
+        // Some gamepads like DS3, DS4, DualSense, Switch, Xbox One S, Stadia support rumble.
+        // It is possible to set it by calling:
+        // Some controllers have two motors: "strong motor", "weak motor".
+        // It is possible to control them independently.
+        ctl->playDualRumble(0 /* delayedStartMs */, 250 /* durationMs */, 0x80 /* weakMagnitude */,
+                            0x40 /* strongMagnitude */);
+    }
+    dumpGamepad(ctl);
+}
 
 void setup() {
   // sets the pins as outputs:
