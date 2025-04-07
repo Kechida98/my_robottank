@@ -152,7 +152,6 @@ void setup() {
      // Optional: enable BLE service (e.g. for apps like LightBlue) change to "true" if i want it activated
     BP32.enableBLEService(false);
 
-
   // sets the pins as outputs:
   pinMode(motor1Pin1, OUTPUT);
   pinMode(motor1Pin2, OUTPUT);
@@ -174,6 +173,16 @@ void setup() {
 }
 
 void loop() {
+
+    // This call fetches all the controllers' data.
+    bool dataUpdated = BP32.update();
+    if (dataUpdated)
+        processControllers();
+
+    //change to vTaskDelay when am using realtimesteering
+    //     vTaskDelay(1);
+    delay(150);
+
   // Move the DC motor forward at maximum speed
   Serial.println("Moving Forward");
   digitalWrite(motor1Pin1, LOW);
