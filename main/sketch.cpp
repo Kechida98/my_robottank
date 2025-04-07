@@ -125,6 +125,16 @@ void processGamepad(ControllerPtr ctl) {
     dumpGamepad(ctl);
 }
 
+void processControllers(){
+    for (auto myController : myControllers) {
+        if (myController && myController->isConnected() && myController->hasData) {
+            if (myController->isGamepad()){
+                processGamepad(myController);
+            }
+        }
+    }
+}
+
 void setup() {
   // sets the pins as outputs:
   pinMode(motor1Pin1, OUTPUT);
