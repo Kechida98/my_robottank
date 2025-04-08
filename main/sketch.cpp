@@ -6,13 +6,14 @@ check Readme.md file for Pictures.
 #include <Arduino.h>
 #include <Bluepad32.h>
 // Motor A
-int motor1Pin1 = 21; 
-int motor1Pin2 = 20; 
-int enable1Pin = 22; 
+int motor1Pin1 = 18; 
+int motor1Pin2 = 5; 
+int enable1Pin = 19; 
 
-int motor2Pin3 = 2; 
-int motor2Pin4 = 3;     
-int enable2Pin = 4; 
+// Motor B
+int motor2Pin3 = 25; 
+int motor2Pin4 = 26;     
+int enable2Pin = 27;  
 
 // Setting PWM properties
 const int freq = 30000;
@@ -136,7 +137,7 @@ void processControllers(){
 }
 
 void setup() {
-      // sets the pins as outputs:
+  // Set motor pins as output
   pinMode(motor1Pin1, OUTPUT);
   pinMode(motor1Pin2, OUTPUT);
   pinMode(enable1Pin, OUTPUT);
@@ -145,11 +146,17 @@ void setup() {
   pinMode(motor2Pin4, OUTPUT);
   pinMode(enable2Pin, OUTPUT);
   
-  // configure LEDC PWM
-  ledcAttachChannel(enable1Pin, freq, resolution, pwmChannel1);
-  ledcAttachChannel(enable2Pin, freq, resolution, pwmChannel2);
+  // Set up PWM channels
+  ledcSetup(pwmChannel1, freq, resolution);
+  ledcAttachPin(enable1Pin, pwmChannel1);
 
-    Console.printf("Firmware: %s\n", BP32.firmwareVersion());
+  ledcSetup(pwmChannel2, freq, resolution);
+  ledcAttachPin(enable2Pin, pwmChannel2);
+
+  Serial.begin(115200);
+  Serial.println("Testing DC Motor...");
+
+    /*Console.printf("Firmware: %s\n", BP32.firmwareVersion());
     const uint8_t* addr = BP32.localBdAddress();
     Console.printf("BD Addr: %2X:%2X:%2X:%2X:%2X:%2X\n", addr[0], addr[1], addr[2], addr[3], addr[4], addr[5]);
 
@@ -162,18 +169,112 @@ void setup() {
     // Optional: clear paired Bluetooth devices
     BP32.forgetBluetoothKeys();
      // Optional: enable BLE service (e.g. for apps like LightBlue) change to "true" if i want it activated
-    BP32.enableBLEService(false);
+    BP32.enableBLEService(false);*/
   
 }
 
 void loop() {
+    // Move motors forward
+  Serial.println("Moving Forward");
+  digitalWrite(motor1Pin1, LOW);
+  digitalWrite(motor1Pin2, HIGH);
+  digitalWrite(motor2Pin3, LOW);
+  digitalWrite(motor2Pin4, HIGH);
+  ledcWrite(pwmChannel1, dutyCycle);
+  ledcWrite(pwmChannel2, dutyCycle);
+  delay(2000);
 
-    // This call fetches all the controllers' data.
+  // Stop
+  Serial.println("Motor stopped");
+  digitalWrite(motor1Pin1, LOW);
+  digitalWrite(motor1Pin2, LOW);
+  digitalWrite(motor2Pin3, LOW);
+  digitalWrite(motor2Pin4, LOW);
+  ledcWrite(pwmChannel1, 0);
+  ledcWrite(pwmChannel2, 0);
+  delay(1000);
+
+  // Pivot right (Motor A forward, Motor B stopped)
+  Serial.println("Pivot Right");
+  digitalWrite(motor1Pin1, LOW);
+  digitalWrite(motor1Pin2, HIGH);
+  digitalWrite(motor2Pin3, LOW);
+  digitalWrite(motor2Pin4, LOW);
+  ledcWrite(pwmChannel1, dutyCycle);
+  ledcWrite(pwmChannel2, 0);
+  delay(1000);
+
+  // Stop
+  Serial.println("Stop");
+  digitalWrite(motor1Pin1, LOW);
+  digitalWrite(motor1Pin2, LOW);
+  digitalWrite(motor2Pin3, LOW);
+  digitalWrite(motor2Pin4, LOW);
+  ledcWrite(pwmChannel1, 0);
+  ledcWrite(pwmChannel2, 0);
+  delay(1000);
+
+  // Pivot left (Motor B forward, Motor A stopped)
+  Serial.println("Pivot Left");
+  digitalWrite(motor1Pin1, LOW);
+  digitalWrite(motor1Pin2, LOW);
+  digitalWrite(motor2Pin3, LOW);
+  digitalWrite(motor2Pin4, HIGH);
+  ledcWrite(pwmChannel1, 0);
+  ledcWrite(pwmChannel2, dutyCycle);
+  delay(1000);
+
+  // Stop
+  Serial.println("Stop");
+  digitalWrite(motor1Pin1, LOW);
+  digitalWrite(motor1Pin2, LOW);
+  digitalWrite(motor2Pin3, LOW);
+  digitalWrite(motor2Pin4, LOW);
+  ledcWrite(pwmChannel1, 0);
+  ledcWrite(pwmChannel2, 0);
+  delay(1000);
+
+  // Move motors backward
+  Serial.println("Moving Backwards");
+  digitalWrite(motor1Pin1, HIGH);
+  digitalWrite(motor1Pin2, LOW);
+  digitalWrite(motor2Pin3, HIGH);
+  digitalWrite(motor2Pin4, LOW);
+  ledcWrite(pwmChannel1, dutyCycle);
+  ledcWrite(pwmChannel2, dutyCycle);
+  delay(2000);
+
+  // Stop
+  Serial.println("Motor stopped");
+  digitalWrite(motor1Pin1, LOW);
+  digitalWrite(motor1Pin2, LOW);
+  digitalWrite(motor2Pin3, LOW);
+  digitalWrite(motor2Pin4, LOW);
+  ledcWrite(pwmChannel1, 0);
+  ledcWrite(pwmChannel2, 0);
+  delay(1000);
+
+  // Move motors forward with increasing speed
+  digitalWrite(motor1Pin1, LOW);
+  digitalWrite(motor1Pin2, HIGH);
+  digitalWrite(motor2Pin3, LOW);
+  digitalWrite(motor2Pin4, HIGH);
+  while (dutyCycle <= 255){
+    ledcWrite(pwmChannel1, dutyCycle);
+    ledcWrite(pwmChannel2, dutyCycle);   
+    Serial.print("Forward with duty cycle: ");
+    Serial.println(dutyCycle);
+    dutyCycle = dutyCycle + 5;
+    delay(500);
+  }
+  dutyCycle = 200; // Reset for next loop
+
+    /*// This call fetches all the controllers' data.
     bool dataUpdated = BP32.update();
     if (dataUpdated)
         processControllers();
 
     //change to vTaskDelay when am using realtimesteering
     //     vTaskDelay(1);
-    delay(150);
+    delay(150);*/
 }
