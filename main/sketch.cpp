@@ -13,7 +13,7 @@ int enable1Pin = 19;
 // Motor B
 int motor2Pin3 = 25; 
 int motor2Pin4 = 26;     
-int enable2Pin = 27;  
+int enable2Pin = 27; 
 
 // Setting PWM properties
 const int freq = 30000;
@@ -146,12 +146,9 @@ void setup() {
   pinMode(motor2Pin4, OUTPUT);
   pinMode(enable2Pin, OUTPUT);
   
-   // Set up PWM channels
-  ledcSetup(pwmChannel1, freq, resolution);
-  ledcAttachPin(enable1Pin, pwmChannel1);
-
-  ledcSetup(pwmChannel2, freq, resolution);
-  ledcAttachPin(enable2Pin, pwmChannel2);
+  // configure LEDC PWM
+  ledcAttachChannel(enable1Pin, freq, resolution, pwmChannel1);
+  ledcAttachChannel(enable2Pin, freq, resolution, pwmChannel2);
 
     Console.printf("Firmware: %s\n", BP32.firmwareVersion());
     const uint8_t* addr = BP32.localBdAddress();
