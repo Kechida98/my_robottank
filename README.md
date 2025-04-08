@@ -72,6 +72,5 @@ At this point, I’ve also mounted the main components on the robot (not perfect
 Picture/Video below:
 ![Image](https://github.com/user-attachments/assets/48a90633-8d2c-4bc6-a11b-93db7a30fcfe)
 
-Extra testing:
 ![Image](https://github.com/user-attachments/assets/8166ed5d-1440-46b8-b354-8f1784d7b184)
 
