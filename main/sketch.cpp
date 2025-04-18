@@ -88,6 +88,13 @@ void dumpGamepad(ControllerPtr ctl) {
 void processGamepad(ControllerPtr ctl) {
      // Query whether a button is pressed
     //  a(), b(), x(), y(), l1(), etc...
+    const int DEADZONE_MOVE = 50;
+    const int minPWM = 70;
+    const int maxPWM = 255;
+
+    int x = ctl->axisX();
+    int y = ctl->axisY();
+
     if (ctl->a()){
         static int colorIdx = 0;
 
@@ -122,7 +129,41 @@ void processGamepad(ControllerPtr ctl) {
         ctl->playDualRumble(0 /* delayedStartMs */, 250 /* durationMs */, 0x80 /* weakMagnitude */,
                             0x40 /* strongMagnitude */);
     }
-    dumpGamepad(ctl);
+    dumpGamepad(ctl); //Debug
+
+    // 🛑 Stopp
+    if (hypot(x, y) < DEADZONE_MOVE) {
+        digitalWrite(motor1Pin1, LOW);
+        digitalWrite(motor1Pin2, LOW);
+        digitalWrite(motor2Pin3, LOW);
+        digitalWrite(motor2Pin4, LOW);
+        ledcWrite(enable1Pin, 0);
+        ledcWrite(enable2Pin, 0);
+        Console.println("🛑 Stopp");
+        return;
+    }
+
+    //🚘 Drive forward or bakvard
+    int speed = map(abs(y), 0, 512, minPWM, maxPWM);
+
+    if (y < -DEADZONE_MOVE) {
+        // Framåt
+        digitalWrite(motor1Pin1, LOW);
+        digitalWrite(motor1Pin2, HIGH);
+        digitalWrite(motor2Pin3, LOW);
+        digitalWrite(motor2Pin4, HIGH);
+        Console.printf("Forward - PWM: %d\n", speed);
+    } else if (y > DEADZONE_MOVE) {
+        // Bakåt
+        digitalWrite(motor1Pin1, HIGH);
+        digitalWrite(motor1Pin2, LOW);
+        digitalWrite(motor2Pin3, HIGH);
+        digitalWrite(motor2Pin4, LOW);
+        Console.printf("Backward - PWM: %d\n", speed);
+    }
+
+    ledcWrite(enable1Pin, speed);
+    ledcWrite(enable2Pin, speed);
 }
 
 void processControllers(){
