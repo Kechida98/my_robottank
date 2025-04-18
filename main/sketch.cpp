@@ -89,7 +89,7 @@ void processGamepad(ControllerPtr ctl) {
      // Query whether a button is pressed
     //  a(), b(), x(), y(), l1(), etc...
     const int DEADZONE_MOVE = 50;   // For the motor to run
-    const int DEADZONE_STEER = 100; // Minimally value to turn
+    const int DEADZONE_STEER = 100; // Minimally value to steer
     const int minPWM = 70;
     const int maxPWM = 255;
 
@@ -141,6 +141,36 @@ void processGamepad(ControllerPtr ctl) {
         ledcWrite(enable1Pin, 0);
         ledcWrite(enable2Pin, 0);
         Console.println("🛑 Stopp");
+        return;
+    }
+
+    // 🌀 Pivot ,only X-movement
+       // 🌀 Pivot ,stopp  + steering
+    if (abs(y) < DEADZONE_MOVE + 30 && abs(x) > DEADZONE_STEER) {  
+        //Adjustment: allowing some Y-axis noise  ±80
+
+        int spinSpeed = map(abs(x), 0, 512, minPWM + 30, maxPWM);  // More speed in pivot
+
+        // Failsafe – Have to make sure that spinspeed is never to low
+        if (spinSpeed < minPWM + 30) spinSpeed = minPWM + 30;
+
+        if (x > 0) {
+            // Steering right
+            digitalWrite(motor1Pin1, HIGH);
+            digitalWrite(motor1Pin2, LOW);
+            digitalWrite(motor2Pin3, LOW);
+            digitalWrite(motor2Pin4, HIGH);
+        } else {
+            // Steering left
+            digitalWrite(motor1Pin1, LOW);
+            digitalWrite(motor1Pin2, HIGH);
+            digitalWrite(motor2Pin3, HIGH);
+            digitalWrite(motor2Pin4, LOW);
+        }
+
+        ledcWrite(enable1Pin, spinSpeed);
+        ledcWrite(enable2Pin, spinSpeed);
+        Console.printf("↩️ Pivot - Speed: %d\n", spinSpeed);
         return;
     }
 
@@ -222,6 +252,6 @@ void loop() {
         processControllers();
 
     //change to vTaskDelay when am using realtimesteering
-    //     vTaskDelay(1);
-    delay(150);
+    vTaskDelay(1);
+    //delay(150);
 }
