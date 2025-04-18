@@ -16,11 +16,10 @@ int motor2Pin4 = 26;
 int enable2Pin = 27; 
 
 // Setting PWM properties
-const int freq = 30000;
+const int freq = 15000;
 const int pwmChannel1 = 0;
 const int pwmChannel2 = 1;
 const int resolution = 8;
-int dutyCycle = 200;
 
 ControllerPtr myControllers[BP32_MAX_GAMEPADS];
 
@@ -147,8 +146,8 @@ void setup() {
   pinMode(enable2Pin, OUTPUT);
   
   // configure LEDC PWM
-  ledcAttachChannel(enable1Pin, freq, resolution, pwmChannel1);
-  ledcAttachChannel(enable2Pin, freq, resolution, pwmChannel2);
+    ledcAttach(enable1Pin, freq, resolution);
+    ledcAttach(enable2Pin, freq, resolution);
 
     Console.printf("Firmware: %s\n", BP32.firmwareVersion());
     const uint8_t* addr = BP32.localBdAddress();
