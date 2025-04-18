@@ -88,7 +88,8 @@ void dumpGamepad(ControllerPtr ctl) {
 void processGamepad(ControllerPtr ctl) {
      // Query whether a button is pressed
     //  a(), b(), x(), y(), l1(), etc...
-    const int DEADZONE_MOVE = 50;
+    const int DEADZONE_MOVE = 50;   // For the motor to run
+    const int DEADZONE_STEER = 100; // Minimally value to turn
     const int minPWM = 70;
     const int maxPWM = 255;
 
@@ -143,18 +144,22 @@ void processGamepad(ControllerPtr ctl) {
         return;
     }
 
-    //🚘 Drive forward or bakvard
+    //🚘 Drivie mechanic + steering
     int speed = map(abs(y), 0, 512, minPWM, maxPWM);
+    int steer = (abs(x) > DEADZONE_STEER) ? map(x, -512, 512, -speed, speed) : 0;
+
+    int leftSpeed = constrain(speed - steer, 0, maxPWM);
+    int rightSpeed = constrain(speed + steer, 0, maxPWM);
 
     if (y < -DEADZONE_MOVE) {
-        // Framåt
+        // Forward
         digitalWrite(motor1Pin1, LOW);
         digitalWrite(motor1Pin2, HIGH);
         digitalWrite(motor2Pin3, LOW);
         digitalWrite(motor2Pin4, HIGH);
         Console.printf("Forward - PWM: %d\n", speed);
     } else if (y > DEADZONE_MOVE) {
-        // Bakåt
+        // Backward
         digitalWrite(motor1Pin1, HIGH);
         digitalWrite(motor1Pin2, LOW);
         digitalWrite(motor2Pin3, HIGH);
@@ -162,8 +167,10 @@ void processGamepad(ControllerPtr ctl) {
         Console.printf("Backward - PWM: %d\n", speed);
     }
 
-    ledcWrite(enable1Pin, speed);
-    ledcWrite(enable2Pin, speed);
+    ledcWrite(enable1Pin, leftSpeed);
+    ledcWrite(enable2Pin, rightSpeed);
+
+    Console.printf("🚘 Drive - L:%d R:%d\n", leftSpeed, rightSpeed);
 }
 
 void processControllers(){
