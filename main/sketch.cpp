@@ -5,6 +5,8 @@ check Readme.md file for Pictures.
 #include "sdkconfig.h"
 #include <Arduino.h>
 #include <Bluepad32.h>
+
+#include <ESP32Servo.h>
 // Motor A
 int motor1Pin1 = 18; 
 int motor1Pin2 = 5; 
