@@ -59,15 +59,12 @@ I’ve been using Ricardo Quesada’s **Bluepad32.h** library to read input from
 - Joystick and button input reading
 - Console debug using Bluepad32
 - Ready for motor control with PWM
+- Control 2 DC motors using joystick and triggers
+
 
 Extra testing:
 I also tested a version of the code that runs the DC motors without using the PS4 controller, just to verify that PWM and motor wiring worked properly with the ESP32 WROOM-32E.
 At this point, I’ve also mounted the main components on the robot (not perfectly), mainly to confirm that everything is functional and fits together.
-
-### Next steps:
-- Control 2 DC motors using joystick and triggers
-- R2 increases speed, R1 decreases speed
-- Add emergency stop function for safety
 
 Picture/Video below:
 
@@ -75,3 +72,32 @@ Picture/Video below:
 
 ![Image](https://github.com/user-attachments/assets/8166ed5d-1440-46b8-b354-8f1784d7b184)
 
+
+## Prototype 5 – PS4 Controller Drive Logic & Pivot Support + ESP32 WROOM-32
+
+In this prototype, I implemented full drive control logic using a PS4 controller connected to an ESP32 WROOM-32 via Bluetooth, using the Bluepad32 library. The goal was smoother driving and adding support for pivoting turning in place.
+
+What was done:
+- Bluetooth connection with PS4 controller using Bluepad32.
+- Joystick and button input handling (X, Y, A, B, R2, L2).
+- Console debugging using Console.printf(), for better realtime feedback.
+- Motor control using PWM via ledcWrite() and automatic ledcAttach().
+- Directional control using L298N motor driver.
+
+Drive Logic Overview:
+- Movement: Forward, backward, and stop via Y-axis.
+- Deadzone: Prevents jitter from small stick movements.
+- Smooth steering: X-axis adjusts left/right motor speeds while driving.
+- Pivot turning: In-place rotation using only X-axis.
+- Added ±30 Y-axis noise for stability.
+- I applied minimum PWM (minPWM + 30) to prevent stalling.
+
+### Next step:
+- Building my pan tilt that will hold the camera.
+- Setting up two servos(sg90) with the pan tilt.
+- For my servos I will need to setup buck regulator, because my L298N motor driver will give out 11V and have to lower it down to 5V.
+- Implement logic for steering servos with ps4 controller.
+- And maybe implement logic for wifi and camera.
+
+Picture/Video below:
+![Image](https://github.com/user-attachments/assets/a142c33b-96a9-472c-8603-2e28c1289e77)
