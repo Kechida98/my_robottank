@@ -100,4 +100,4 @@ Drive Logic Overview:
 - And maybe implement logic for wifi and camera.
 
 Picture/Video below:
-![Image](https://github.com/user-attachments/assets/a142c33b-96a9-472c-8603-2e28c1289e77)
+![Image](https://github.com/user-attachments/assets/98faa8ca-5203-49f3-852d-0d0e68bfeed1)
