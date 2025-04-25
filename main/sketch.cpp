@@ -23,6 +23,16 @@ const int pwmChannel1 = 0;
 const int pwmChannel2 = 1;
 const int resolution = 8;
 
+int xServoPin=12;
+int yServoPin=13;
+
+int xServoPos;
+int yServoPos;
+
+
+Servo xServoPan;
+Servo yServoTilt;
+
 ControllerPtr myControllers[BP32_MAX_GAMEPADS];
 
 // This callback gets called any time a new gamepad is connected.
@@ -92,11 +102,15 @@ void processGamepad(ControllerPtr ctl) {
     //  a(), b(), x(), y(), l1(), etc...
     const int DEADZONE_MOVE = 50;   // For the motor to run
     const int DEADZONE_STEER = 100; // Minimally value to steer
+    const int DEADZONE_SERVO = 30;
     const int minPWM = 70;
     const int maxPWM = 255;
 
+    // This is for Read left stick and right stick movement
     int x = ctl->axisX();
     int y = ctl->axisY();
+    int rx = ctl->axisRX();
+    int ry = ctl->axisRY();
 
     if (ctl->a()){
         static int colorIdx = 0;
@@ -134,6 +148,36 @@ void processGamepad(ControllerPtr ctl) {
     }
     dumpGamepad(ctl); //Debug
 
+    // Horizontal control for Servo 1 using right joystick X-axis.
+    // Prevents jittering if joystick isn't really moving.
+    if (abs(rx) > DEADZONE_SERVO){
+        //xServoPos = map(rx,0,1023,0,180); and not like this because bluepad32 returns->
+        //only value between -512 to +512 and not 0-1023 like an analog input. This is a good comparision to mention for my exam work.
+        //Got to do pretty much same as I did for my left stick for vehicle movement.
+
+        //correct way
+        xServoPos = map(rx, -512, 512, 0, 180);
+
+        //Write is a member of class servo and public. That checks ->
+        //if value is < MIN_PULSE_WIDTH its treated as an angle, otherwise as pulse width in microseconds -> mentioned in the library.
+        xServoPan.write(xServoPos);
+    }
+    
+    // Vertical control for Servo 1 using right joystick y-axis.
+    if (abs(ry) > DEADZONE_SERVO){
+        yServoPos = map(ry,-512, 512, 0, 180);
+        yServoTilt.write(yServoPos);
+    }
+
+    if (ctl->l1()){
+        xServoPos= 90;
+        yServoPos= 90;
+        xServoPan.write(xServoPos);
+        yServoTilt.write(yServoPos);
+        Console.println("Servos centerd");
+
+    }
+    
     // 🛑 Stopp
     if (hypot(x, y) < DEADZONE_MOVE) {
         digitalWrite(motor1Pin1, LOW);
@@ -224,6 +268,11 @@ void setup() {
   pinMode(motor2Pin3, OUTPUT);
   pinMode(motor2Pin4, OUTPUT);
   pinMode(enable2Pin, OUTPUT);
+
+  //attach is a member of class servo and public. That makes sure to ->
+  // attach the given pin to the next free channel, returns channel number or 0 if failure, explained also in its class.
+  xServoPan.attach(xServoPin);
+  yServoTilt.attach(yServoPin);
   
   // configure LEDC PWM
     ledcAttach(enable1Pin, freq, resolution);
