@@ -24,10 +24,9 @@ const int pwmChannel2 = 1;
 const int resolution = 8;
 
 int xServoPin=12;
-int yServoPin=13;
+int yServoPin=14;
 
 int xServoPos;
-int yServoPos;
 
 
 Servo xServoPan;
@@ -110,7 +109,6 @@ void processGamepad(ControllerPtr ctl) {
     int x = ctl->axisX();
     int y = ctl->axisY();
     int rx = ctl->axisRX();
-    int ry = ctl->axisRY();
 
     if (ctl->a()){
         static int colorIdx = 0;
@@ -164,17 +162,37 @@ void processGamepad(ControllerPtr ctl) {
     }
     
     // Vertical control for Servo 1 using right joystick y-axis.
-    if (abs(ry) > DEADZONE_SERVO){
-        yServoPos = map(ry,-512, 512, 0, 180);
-        yServoTilt.write(yServoPos);
+    // D-pad controll to y servo increase/decrease per click by 10°
+static int currentY = 90;
+static bool upPressed = false;
+static bool downPressed = false;
 
+if ((ctl->dpad() & DPAD_UP) && !upPressed) {
+    currentY = constrain(currentY + 10, 0, 180);
+    yServoTilt.write(currentY);
+    Console.printf("Tilt +10° → %d\n", currentY);
+    upPressed = true;
+}
+else if (!(ctl->dpad() & DPAD_UP)) {
+    upPressed = false; // reset
+}
+
+if ((ctl->dpad() & DPAD_DOWN) && !downPressed) {
+    currentY = constrain(currentY - 10, 0, 180);
+    yServoTilt.write(currentY);
+    Console.printf("Tilt -10° → %d\n", currentY);
+    downPressed = true;
+}
+else if (!(ctl->dpad() & DPAD_DOWN)) {
+    downPressed = false;
     }
+
 
     if (ctl->l1()){
         xServoPos= 90;
-        yServoPos= 90;
+        currentY = 90;
         xServoPan.write(xServoPos);
-        yServoTilt.write(yServoPos);
+        yServoTilt.write(currentY);
         Console.println("Servos centerd");
 
     }
