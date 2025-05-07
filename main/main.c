@@ -52,6 +52,18 @@ int app_main(void) {
     ESP_LOGI(TAG, "Creating default event loop...");
     ESP_ERROR_CHECK(esp_event_loop_create_default());
 
+    // Start Wi-Fi Handler
+    ESP_LOGI(TAG, "Starting Wi-Fi Handler...");
+    EventGroupHandle_t wifi_event_group = xEventGroupCreate();
+
+    wifi_init_param_t w_param = {
+        .ssid = CONFIG_WIFI_SSID,
+        .password = CONFIG_WIFI_PASSWORD,
+        .wifi_event_group = wifi_event_group,
+    };
+
+    wifi_handler_start(&w_param);
+
     // Configure BTstack for ESP32 VHCI Controller
     btstack_init();
 
