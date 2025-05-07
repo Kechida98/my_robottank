@@ -19,6 +19,8 @@
 #include "esp_log.h"
 #include "nvs_flash.h"
 
+#include "printer_helper.h"
+
 static const char* TAG = "main";
 
 // Autostart
@@ -36,7 +38,7 @@ int app_main(void) {
 #endif
 
     //Initialize NVS
-    ESP_LOGI(TAG, "Initializing NVS...");
+    PRINTFC_MAIN("Initializing NVS...");
     esp_err_t ret = nvs_flash_init();
     if (ret == ESP_ERR_NVS_NO_FREE_PAGES || ret == ESP_ERR_NVS_NEW_VERSION_FOUND) {
         ESP_ERROR_CHECK(nvs_flash_erase());
@@ -45,15 +47,15 @@ int app_main(void) {
     ESP_ERROR_CHECK(ret);
 
     // Initialize network interface
-    ESP_LOGI(TAG, "Initializing network interface...");
+    PRINTFC_MAIN("Initializing network interface...");
     ESP_ERROR_CHECK(esp_netif_init());
 
     // Create default event loop
-    ESP_LOGI(TAG, "Creating default event loop...");
+    PRINTFC_MAIN("Creating default event loop...");
     ESP_ERROR_CHECK(esp_event_loop_create_default());
 
     // Start Wi-Fi Handler
-    ESP_LOGI(TAG, "Starting Wi-Fi Handler...");
+    PRINTFC_WIFI_HANDLER("Starting Wi-Fi Handler...");
     EventGroupHandle_t wifi_event_group = xEventGroupCreate();
 
     wifi_init_param_t w_param = {
@@ -73,7 +75,7 @@ int app_main(void) {
     uni_platform_set_custom(get_arduino_platform());
 
     // Init Bluepad32.
-    uni_init(0 /* argc */, NULL /* argv */);
+    uni_init(0, NULL);
 
     // Does not return.
     btstack_run_loop_execute();
