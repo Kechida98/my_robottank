@@ -167,6 +167,7 @@ void processGamepad(ControllerPtr ctl) {
     if (abs(ry) > DEADZONE_SERVO){
         yServoPos = map(ry,-512, 512, 0, 180);
         yServoTilt.write(yServoPos);
+
     }
 
     if (ctl->l1()){
