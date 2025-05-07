@@ -1,6 +1,8 @@
 #include "sdkconfig.h"
 
 #include <stddef.h>
+#include <string.h>
+
 // BTstack related
 #include <btstack_port_esp32.h>
 #include <btstack_run_loop.h>
@@ -10,22 +12,28 @@
 #include <arduino_platform.h>
 #include <uni.h>
 
-//
+// Wi-Fi related
+#include "wifi_handler.h"
+#include "esp_event.h"
+#include "esp_netif.h"
+#include "esp_log.h"
+#include "nvs_flash.h"
+
+static const char* TAG = "main";
+
 // Autostart
-//
 #if CONFIG_AUTOSTART_ARDUINO
 void initBluepad32() {
 #else
 int app_main(void) {
 #endif  // !CONFIG_AUTOSTART_ARDUINO
-    // hci_dump_open(NULL, HCI_DUMP_STDOUT);
 
 // Don't use BTstack buffered UART. It conflicts with the console.
 #ifndef CONFIG_ESP_CONSOLE_UART_NONE
 #ifndef CONFIG_BLUEPAD32_USB_CONSOLE_ENABLE
     btstack_stdio_init();
-#endif  // CONFIG_BLUEPAD32_USB_CONSOLE_ENABLE
-#endif  // CONFIG_ESP_CONSOLE_UART_NONE
+#endif
+#endif
 
     // Configure BTstack for ESP32 VHCI Controller
     btstack_init();
