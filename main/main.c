@@ -44,6 +44,14 @@ int app_main(void) {
     }
     ESP_ERROR_CHECK(ret);
 
+    // Initialize network interface
+    ESP_LOGI(TAG, "Initializing network interface...");
+    ESP_ERROR_CHECK(esp_netif_init());
+
+    // Create default event loop
+    ESP_LOGI(TAG, "Creating default event loop...");
+    ESP_ERROR_CHECK(esp_event_loop_create_default());
+
     // Configure BTstack for ESP32 VHCI Controller
     btstack_init();
 
