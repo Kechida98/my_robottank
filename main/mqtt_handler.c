@@ -18,3 +18,30 @@ static void buzzer_beep(int duration_ms) {
     gpio_set_level(BUZZER_GPIO, 0);
     vTaskDelay(pdMS_TO_TICKS(150));  
 }
+
+static void buzzer_task(void *pvParameters) {
+    while (alarm_active) {
+        // S = ...
+        for (int i = 0; i < 3 && alarm_active; i++) {
+            buzzer_beep(150);  // dot
+        }
+
+        vTaskDelay(pdMS_TO_TICKS(300));
+
+        // O = ---
+        for (int i = 0; i < 3 && alarm_active; i++) {
+            buzzer_beep(450);  // dash
+        }
+
+        vTaskDelay(pdMS_TO_TICKS(300));  
+
+        // S = ...
+        for (int i = 0; i < 3 && alarm_active; i++) {
+            buzzer_beep(150);  // dot
+        }
+
+        vTaskDelay(pdMS_TO_TICKS(1000)); 
+    }
+
+    vTaskDelete(NULL);
+}
