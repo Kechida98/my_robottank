@@ -45,3 +45,57 @@ static void buzzer_task(void *pvParameters) {
 
     vTaskDelete(NULL);
 }
+
+
+static void mqtt_event_handler_cb(void *handler_args, esp_event_base_t base, int32_t event_id, void *event_data) {
+    esp_mqtt_event_handle_t event = event_data;
+    esp_mqtt_client_handle_t client = event->client;
+
+    switch (event->event_id) {
+        case MQTT_EVENT_CONNECTED:
+            PRINTFC_MQTT_HANDLER("MQTT connected");
+            esp_mqtt_client_subscribe(client, "brandlarm/alarm", 0);
+            break;
+
+        case MQTT_EVENT_DATA: {
+            PRINTFC_MQTT_HANDLER("Message received");
+
+            char topic[64] = {0};
+            memcpy(topic, event->topic, event->topic_len);
+            topic[event->topic_len] = '\0';
+
+            char payload[64] = {0};
+            memcpy(payload, event->data, event->data_len);
+            payload[event->data_len] = '\0';
+
+            PRINTFC_MQTT_HANDLER("Topic: %s", topic);
+            PRINTFC_MQTT_HANDLER("Payload: %s", payload);
+
+            if (strcmp(topic, "brandlarm/alarm") == 0) {
+                if (strstr(payload, "Brandrisk") != NULL) {
+                    if (!alarm_active) {
+                        PRINTFC_MQTT_HANDLER("🔥 Brandrisk upptäckt – buzzer startas");
+                        alarm_active = true;
+                        xTaskCreate(buzzer_task, "buzzer_task", 2048, NULL, 10, &buzzer_task_handle);
+                    }
+                } else if (strstr(payload, "Ingen brandrisk") != NULL) {
+                    if (alarm_active) {
+                        PRINTFC_MQTT_HANDLER("Ingen brandrisk – buzzer stoppas");
+                        alarm_active = false;
+                    }
+                } else {
+                    PRINTFC_MQTT_HANDLER("⚠️ Payload ignorerad (okänt tillstånd): %s", payload);
+                }
+            }
+            break;
+        }
+
+        case MQTT_EVENT_ERROR:
+            PRINTFC_MQTT_HANDLER("MQTT error occurred");
+            break;
+
+        default:
+            PRINTFC_MQTT_HANDLER("MQTT event ID: %" PRId32, event_id);
+            break;
+    }
+}
