@@ -11,3 +11,10 @@
 
 static TaskHandle_t buzzer_task_handle = NULL;
 static bool alarm_active = false;
+
+static void buzzer_beep(int duration_ms) {
+    gpio_set_level(BUZZER_GPIO, 1);
+    vTaskDelay(pdMS_TO_TICKS(duration_ms));
+    gpio_set_level(BUZZER_GPIO, 0);
+    vTaskDelay(pdMS_TO_TICKS(150));  
+}
