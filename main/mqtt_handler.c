@@ -99,3 +99,25 @@ static void mqtt_event_handler_cb(void *handler_args, esp_event_base_t base, int
             break;
     }
 }
+
+void mqtt_app_start(void) {
+    gpio_config_t io_conf = {
+        .pin_bit_mask = 1ULL << BUZZER_GPIO,
+        .mode = GPIO_MODE_OUTPUT,
+        .pull_down_en = 0,
+        .pull_up_en = 0,
+        .intr_type = GPIO_INTR_DISABLE,
+    };
+    gpio_config(&io_conf);
+    gpio_set_level(BUZZER_GPIO, 0);
+
+    const esp_mqtt_client_config_t mqtt_cfg = {
+        .broker.address.uri = "mqtt://172.16.218.233",
+    };
+
+    esp_mqtt_client_handle_t client = esp_mqtt_client_init(&mqtt_cfg);
+    esp_mqtt_client_register_event(client, ESP_EVENT_ANY_ID, mqtt_event_handler_cb, NULL);
+    esp_mqtt_client_start(client);
+
+    PRINTFC_MQTT_HANDLER("📡 MQTT client started");
+}
