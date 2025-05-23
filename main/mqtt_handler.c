@@ -74,7 +74,7 @@ static void mqtt_event_handler_cb(void *handler_args, esp_event_base_t base, int
             if (strcmp(topic, "brandlarm/alarm") == 0) {
                 if (strstr(payload, "Brandrisk") != NULL) {
                     if (!alarm_active) {
-                        PRINTFC_MQTT_HANDLER("🔥 Brandrisk upptäckt – buzzer startas");
+                        PRINTFC_MQTT_HANDLER("Brandrisk upptäckt – buzzer startas");
                         alarm_active = true;
                         xTaskCreate(buzzer_task, "buzzer_task", 2048, NULL, 10, &buzzer_task_handle);
                     }
@@ -112,12 +112,12 @@ void mqtt_app_start(void) {
     gpio_set_level(BUZZER_GPIO, 0);
 
     const esp_mqtt_client_config_t mqtt_cfg = {
-        .broker.address.uri = "mqtt://172.16.218.233",
+        .broker.address.uri = "mqtt://192.168.1.115",
     };
 
     esp_mqtt_client_handle_t client = esp_mqtt_client_init(&mqtt_cfg);
     esp_mqtt_client_register_event(client, ESP_EVENT_ANY_ID, mqtt_event_handler_cb, NULL);
     esp_mqtt_client_start(client);
 
-    PRINTFC_MQTT_HANDLER("📡 MQTT client started");
+    PRINTFC_MQTT_HANDLER(" MQTT client started");
 }
