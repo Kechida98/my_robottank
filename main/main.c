@@ -22,14 +22,14 @@
 
 //MQTT-task 
 void mqtt_task(void* arg) {
-    PRINTFC_MQTT_HANDLER("🚀 Starting MQTT task...");
+    PRINTFC_MQTT_HANDLER(" Starting MQTT task...");
     mqtt_app_start();
     vTaskDelete(NULL); //MQTT is asyncronized
 }
 
 //Bluepad32-task
 void bluepad32_task(void* arg) {
-    PRINTFC_MAIN("🎮 Starting Bluepad32 task...");
+    PRINTFC_MAIN("Starting Bluepad32 task...");
     btstack_init();
     uni_platform_set_custom(get_arduino_platform());
     uni_init(0, NULL);
@@ -50,7 +50,7 @@ int app_main(void) {
 #endif
 
     //NVS-init
-    PRINTFC_MAIN("📦 Initializing NVS...");
+    PRINTFC_MAIN("Initializing NVS...");
     esp_err_t ret = nvs_flash_init();
     if (ret == ESP_ERR_NVS_NO_FREE_PAGES || ret == ESP_ERR_NVS_NEW_VERSION_FOUND) {
         ESP_ERROR_CHECK(nvs_flash_erase());
@@ -59,14 +59,14 @@ int app_main(void) {
     ESP_ERROR_CHECK(ret);
 
     //Network + Event loop
-    PRINTFC_MAIN("🌐 Initializing network interface...");
+    PRINTFC_MAIN(" Initializing network interface...");
     ESP_ERROR_CHECK(esp_netif_init());
 
-    PRINTFC_MAIN("🔁 Creating default event loop...");
+    PRINTFC_MAIN(" Creating default event loop...");
     ESP_ERROR_CHECK(esp_event_loop_create_default());
 
     //Wi-Fi startup
-    PRINTFC_WIFI_HANDLER("📡 Starting Wi-Fi...");
+    PRINTFC_WIFI_HANDLER("Starting Wi-Fi...");
     EventGroupHandle_t wifi_event_group = xEventGroupCreate();
     wifi_init_param_t w_param = {
         .ssid = CONFIG_WIFI_SSID,
