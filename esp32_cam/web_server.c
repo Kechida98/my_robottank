@@ -68,18 +68,18 @@ void start_web_server(void) {
         esp_err_t err_stream = httpd_register_uri_handler(server, &stream_uri);
 
         if (err_root == ESP_OK) {
-            PRINTFC_SERVER("✅ Root handler registered at /");
+            PRINTFC_SERVER("Root handler registered at /");
         } else {
-            PRINTFC_SERVER("❌ Failed to register / handler: %d", err_root);
+            PRINTFC_SERVER("Failed to register / handler: %d", err_root);
         }
 
         if (err_stream == ESP_OK) {
-            PRINTFC_SERVER("✅ Stream handler registered at /stream");
+            PRINTFC_SERVER("Stream handler registered at /stream");
         } else {
-            PRINTFC_SERVER("❌ Failed to register /stream handler: %d", err_stream);
+            PRINTFC_SERVER("Failed to register /stream handler: %d", err_stream);
         }
     } else {
-        PRINTFC_SERVER("❌ Failed to start HTTP server");
+        PRINTFC_SERVER(" Failed to start HTTP server");
     }
 }
 

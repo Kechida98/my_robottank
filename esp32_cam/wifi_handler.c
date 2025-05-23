@@ -18,7 +18,7 @@ static void wifi_event_handler(void *arg, esp_event_base_t event_base, int32_t e
 
         case WIFI_EVENT_STA_CONNECTED:
             PRINTFC_WIFI_HANDLER("WiFi connected");
-            reconnect_counter = 0; // Nollställ om anslutningen lyckades
+            reconnect_counter = 0; 
             xEventGroupSetBits(param->wifi_event_group, WIFI_CONNECTED_BIT);
             break;
 
@@ -97,7 +97,7 @@ void wifi_handler_start(wifi_init_param_t *param) {
                                            WIFI_HAS_IP_BIT,
                                            pdFALSE,
                                            pdTRUE,
-                                           pdMS_TO_TICKS(30000)); // Timeout 30 sekunder
+                                           pdMS_TO_TICKS(30000));
 
     if (bits & WIFI_HAS_IP_BIT) {
         PRINTFC_WIFI_HANDLER("Successfully connected to Wi-Fi.");
