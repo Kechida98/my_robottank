@@ -12,13 +12,14 @@
 static TaskHandle_t buzzer_task_handle = NULL;
 static bool alarm_active = false;
 
+// Beeps the buzzer for a given duration in milliseconds
 static void buzzer_beep(int duration_ms) {
     gpio_set_level(BUZZER_GPIO, 1);
     vTaskDelay(pdMS_TO_TICKS(duration_ms));
     gpio_set_level(BUZZER_GPIO, 0);
     vTaskDelay(pdMS_TO_TICKS(150));  
 }
-
+// Plays SOS in sound code while the alarm is active
 static void buzzer_task(void *pvParameters) {
     while (alarm_active) {
         // S = ...
@@ -43,10 +44,10 @@ static void buzzer_task(void *pvParameters) {
         vTaskDelay(pdMS_TO_TICKS(1000)); 
     }
 
-    vTaskDelete(NULL);
+    vTaskDelete(NULL);// End task when alarm is deactivated
 }
 
-
+// Handles MQTT connection and messages
 static void mqtt_event_handler_cb(void *handler_args, esp_event_base_t base, int32_t event_id, void *event_data) {
     esp_mqtt_event_handle_t event = event_data;
     esp_mqtt_client_handle_t client = event->client;
@@ -54,7 +55,7 @@ static void mqtt_event_handler_cb(void *handler_args, esp_event_base_t base, int
     switch (event->event_id) {
         case MQTT_EVENT_CONNECTED:
             PRINTFC_MQTT_HANDLER("MQTT connected");
-            esp_mqtt_client_subscribe(client, "brandlarm/alarm", 0);
+            esp_mqtt_client_subscribe(client, "brandlarm/alarm", 0);// Subscribe
             break;
 
         case MQTT_EVENT_DATA: {
@@ -71,6 +72,7 @@ static void mqtt_event_handler_cb(void *handler_args, esp_event_base_t base, int
             PRINTFC_MQTT_HANDLER("Topic: %s", topic);
             PRINTFC_MQTT_HANDLER("Payload: %s", payload);
 
+            // Handle messages depends
             if (strcmp(topic, "brandlarm/alarm") == 0) {
                 if (strstr(payload, "Brandrisk") != NULL) {
                     if (!alarm_active) {
@@ -100,6 +102,7 @@ static void mqtt_event_handler_cb(void *handler_args, esp_event_base_t base, int
     }
 }
 
+// Initializes MQTT and the buzzer GPIO
 void mqtt_app_start(void) {
     gpio_config_t io_conf = {
         .pin_bit_mask = 1ULL << BUZZER_GPIO,
@@ -109,7 +112,7 @@ void mqtt_app_start(void) {
         .intr_type = GPIO_INTR_DISABLE,
     };
     gpio_config(&io_conf);
-    gpio_set_level(BUZZER_GPIO, 0);
+    gpio_set_level(BUZZER_GPIO, 0);// Buzzer off
 
     const esp_mqtt_client_config_t mqtt_cfg = {
         .broker.address.uri = "mqtt://192.168.1.115",

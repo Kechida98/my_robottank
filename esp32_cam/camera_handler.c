@@ -2,6 +2,7 @@
 #include "esp_camera.h"
 #include "printer_helper.h"
 
+// Initializes the camera with the specified pin configuration and settings
 esp_err_t camera_handler_init(void) {
     camera_config_t config = {
     .pin_pwdn  = 32,
@@ -42,6 +43,7 @@ esp_err_t camera_handler_init(void) {
     return err;
 }
 
+// Captures a frame and immediately releases it
 esp_err_t camera_capture_frame(void) {
     camera_fb_t *fb = esp_camera_fb_get();
     if (!fb) return ESP_FAIL;
@@ -49,6 +51,7 @@ esp_err_t camera_capture_frame(void) {
     return ESP_OK;
 }
 
+// Deinitializes the camera and frees resources
 esp_err_t camera_handler_deinit(void) {
     return esp_camera_deinit();
 }

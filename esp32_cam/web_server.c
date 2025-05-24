@@ -3,6 +3,7 @@
 #include "esp_camera.h"
 #include "printer_helper.h"
 
+// HTML page that will be served at the root URL
 static const char index_html[] =
 "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"UTF-8\" />"
 "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />"
@@ -15,22 +16,25 @@ static const char index_html[] =
 "</style></head><body><h1>📷 ESP32-CAM Live Stream</h1>"
 "<div class=\"stream-box\"><img src=\"/stream\" alt=\"ESP32 Stream\" /></div></body></html>";
 
+// Sends the HTML page when client accesses
 static esp_err_t index_handler(httpd_req_t *req) {
     httpd_resp_set_type(req, "text/html");
     return httpd_resp_send(req, index_html, HTTPD_RESP_USE_STRLEN);
 }
 
+// Handles the video stream when client accesses "/stream"
 static esp_err_t stream_handler(httpd_req_t *req) {
     httpd_resp_set_type(req, "multipart/x-mixed-replace; boundary=frame");
 
     while (true) {
-        camera_fb_t *fb = esp_camera_fb_get();
+        camera_fb_t *fb = esp_camera_fb_get();// Get camera frame
         if (!fb) continue;
 
         char header[64];
         int hlen = snprintf(header, sizeof(header),
                             "--frame\r\nContent-Type: image/jpeg\r\nContent-Length: %u\r\n\r\n", fb->len);
 
+        // Send frame header and image data
         if (httpd_resp_send_chunk(req, header, hlen) != ESP_OK ||
             httpd_resp_send_chunk(req, (const char *)fb->buf, fb->len) != ESP_OK) {
             esp_camera_fb_return(fb);
@@ -41,10 +45,11 @@ static esp_err_t stream_handler(httpd_req_t *req) {
         vTaskDelay(pdMS_TO_TICKS(100));
     }
 
-    httpd_resp_send_chunk(req, NULL, 0);
+    httpd_resp_send_chunk(req, NULL, 0); // End stream
     return ESP_OK;
 }
 
+// Starts the HTTP server and registers the URL handlers
 void start_web_server(void) {
     httpd_config_t config = HTTPD_DEFAULT_CONFIG();
     httpd_handle_t server = NULL;
@@ -63,8 +68,9 @@ void start_web_server(void) {
             .handler = stream_handler,
             .user_ctx = NULL
         };
-
+        // Register the / route
         esp_err_t err_root = httpd_register_uri_handler(server, &root_uri);
+        // Register the "/stream" route
         esp_err_t err_stream = httpd_register_uri_handler(server, &stream_uri);
 
         if (err_root == ESP_OK) {
