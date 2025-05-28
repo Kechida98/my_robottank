@@ -24,7 +24,7 @@ Components used in Prototype 1:
 Motor A was tested for forward and backward movement using PWM.
 
 ### Picture/Video below:
-![Motor setup](https://github.com/user-attachments/assets/0ee76e86-15a2-43bc-93b2-a7ba8820f6ca)
+https://github.com/user-attachments/assets/0ee76e86-15a2-43bc-93b2-a7ba8820f6ca
 
 ### Problem: 
 A screw got stuck inside the DC motor because it was fastened in the wrong direction, which locked the motor. It had to be removed.
@@ -52,7 +52,7 @@ I also bought the kit chassi to improve structure, stability, and overall design
 
 ![Image](https://github.com/user-attachments/assets/f9de452d-4bb6-4732-a826-fda9fbc57b1c)
 
-![Image](https://github.com/user-attachments/assets/cef2f348-9651-4c71-ade7-fe4c406b4a01)
+https://github.com/user-attachments/assets/cef2f348-9651-4c71-ade7-fe4c406b4a01
 
 ### Problem: 
 The motor control was behaving strangely and was lagging because the functions ledcSetup and ledcAttachPin had been removed in the Arduino library I was testing with.
@@ -73,7 +73,7 @@ I’m saving that part for when I start working with **Bluetooth control** for t
 For now, I’ll continue powering the microcontroller externally.
 
 ### Picture/Video below:
-![Image](https://github.com/user-attachments/assets/44a64f3d-078d-4d90-97d8-be7de222b782)
+https://github.com/user-attachments/assets/44a64f3d-078d-4d90-97d8-be7de222b782
 
 See problem/solution under Prototype 2, as they share the same issue.
 
@@ -95,9 +95,9 @@ I also tested a version of the code that runs the DC motors without using the PS
 At this point, I’ve also mounted the main components on the robot (not perfectly), mainly to confirm that everything is functional and fits together.
 
 ### Picture/Video below:
-![Image](https://github.com/user-attachments/assets/48a90633-8d2c-4bc6-a11b-93db7a30fcfe)
+https://github.com/user-attachments/assets/48a90633-8d2c-4bc6-a11b-93db7a30fcfe
 
-![Image](https://github.com/user-attachments/assets/8166ed5d-1440-46b8-b354-8f1784d7b184)
+https://github.com/user-attachments/assets/8166ed5d-1440-46b8-b354-8f1784d7b184
 
 ### Problem: 
 Initial issues using the Bluepad32 library due to using the ESP32-C6 (not compatible with Bluedroid). Switched to ESP32 WROOM-32E.
@@ -134,7 +134,7 @@ In this prototype, I implemented full drive control logic using a PS4 controller
 - And maybe implement logic for wifi and camera.
 
 Picture/Video below:
-![Image](https://github.com/user-attachments/assets/98faa8ca-5203-49f3-852d-0d0e68bfeed1)
+https://github.com/user-attachments/assets/98faa8ca-5203-49f3-852d-0d0e68bfeed1
 
 ### Problem: 
 - Like in Prototypes 2 and 3, sluggish motor control caused by outdated API usage.
@@ -155,7 +155,7 @@ I built my pan tilt for the camera and set up two SG90 servos powered through a 
 ### Picture/Video below:
 ![Image](https://github.com/user-attachments/assets/8951795e-4900-4d01-a5f6-9cd30512eaa7)
 
-![Image](https://github.com/user-attachments/assets/692a3758-78b6-447e-84f4-228ae45a82cc)
+https://github.com/user-attachments/assets/692a3758-78b6-447e-84f4-228ae45a82cc
 
 
 ### Problems:
@@ -187,7 +187,7 @@ I faced the challenge that the ESP32-CAM has no built-in USB for flashing, so I 
 
 ![Image](https://github.com/user-attachments/assets/ee26d418-685f-4798-99ea-e9ed6fbde4cc)
 
-![Image](https://github.com/user-attachments/assets/b107ab88-bce2-4b9d-825a-a92f53a278f4)
+https://github.com/user-attachments/assets/b107ab88-bce2-4b9d-825a-a92f53a278f4
 
 ### Problems:
 - Flashing ESP32-CAM without built-in USB was complex and error-prone.
@@ -224,8 +224,7 @@ I worked on integrating Wi-Fi, MQTT messaging, and server communication but face
 - Split Bluetooth and Wi-Fi/MQTT into separate FreeRTOS tasks pinned to different CPU cores to prevent interference.
 
 ## All combined final product Picture/Video:
-
-![Image](https://github.com/user-attachments/assets/75f41d0b-faed-450d-9148-06a95fff24d3)
+https://github.com/user-attachments/assets/75f41d0b-faed-450d-9148-06a95fff24d3
 
 
 ## Possible improvements and future developments
