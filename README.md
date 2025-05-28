@@ -134,6 +134,7 @@ In this prototype, I implemented full drive control logic using a PS4 controller
 - And maybe implement logic for wifi and camera.
 
 Picture/Video below:
+
 https://github.com/user-attachments/assets/98faa8ca-5203-49f3-852d-0d0e68bfeed1
 
 ### Problem: 
